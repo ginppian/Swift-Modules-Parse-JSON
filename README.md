@@ -714,9 +714,9 @@ Posterior a esto podríamos desplegarlo en un *TableView* o guarda con *CoreData
 
 * Para hacer el *parse* podemos: 
 
-1.- Hacerlo a patita, haciendo *cast* y manejando los *nil*.
-2.- Usando *SwiftyJSON* y accediendo a los *atributos* a través de *clave:valor*
-3.- Pasando a el *response* a objetos, auxiliados de *pods* como *ObjectMapper* u otros.
++ Hacerlo a patita, haciendo *cast* y manejando los *nil*.
++ Usando *SwiftyJSON* y accediendo a los *atributos* a través de *clave:valor*
++ Pasando a el *response* a objetos, auxiliados de *pods* como *ObjectMapper* u otros.
 
 * Podríamos hacer código *spaguetti*, por ejemplo guardar nuestro arreglo de objetos [{...},{...},{...}] en una variable global de tipo:
 
@@ -751,8 +751,8 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
 Esto presenta varias desventajas: 
 
 * Continuamente se estará ejecutando esas operaciones en vez de una sola vez.
-2.- A la larga se volverá difícil de mantener el código.
-3.- No podemos usar la información obtenida en otras funciones, etc.
+* A la larga se volverá difícil de mantener el código.
+* No podemos usar la información obtenida en otras funciones, etc.
 
 La recomendación es tratar a los objetos JSON como lo que son: *objetos*.
 
