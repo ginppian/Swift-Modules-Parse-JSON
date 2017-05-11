@@ -191,8 +191,8 @@ if((response.result.value) != nil) {
             .responseJSON(completionHandler: { response in
 
                 //Deserealizacion
-                let swiftyJson = JSON(response.result.value!)
-                print("swiftyJson: \(swiftyJson)")
+                let SwiftyJsonVar = JSON(response.result.value!)
+                print("SwiftyJsonVar: \(SwiftyJsonVar)")
                 
             })
 ```
@@ -217,27 +217,32 @@ Si corremos el proyecto podremos ver lo siguiente:
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto3.png" width="760" height="402" />
 </p>
 
-La principal **diferencia** es que con el segundo nos otros obtenemos un objeto de *Any* tendríamos que hacerle un cast a un arreglo de objetos de clave:valor *[[String: AnyObject]]*, recorrerlo manejando sus *Nil* etc. 
+La principal **diferencia** es que con el segundo nos otros obtenemos un objeto de *Any* tendríamos que hacerle un cast a un arreglo de objetos de clave:valor *[[String: AnyObject]]*, manejar sus *Nil* etc. 
 
 Éste trabajo nos lo ahorra *SwiftyJSON*, pues el primer código nos regresa un objeto **JSON** como tal, sabiendo que podremos acceder a los datos mediante la estructura *clave:valor* y obtener la información necesaria.
 
+**Dejaremos SwiftyJSON y usaremos otro método**. 
+
+Como tal SwiftyJSON nos da un objeto de tipo JSON, él cual podriamos recorrerlo he ir guardando los sus valores en objetos. Pero para ahorrarnos este trabajo existe otro *pod*.
+
+*ObjectMapper* como tal le indicamos la estructura de nuestro objeto, las claves y no hay necesidad de *parsear* con esta información *ObjectMapper* nos regresa nuestros objetos ya construidos.
+
 ## Paso 3
 
-Pasando nuestro JSON a Objeto:
+Construyendo Objetos:
 
-* Como primer paso tenemos que analizar nuestro JSON:
+Como tal JSON es un arreglo de objetos [{...},{...},{...}].
+Los cuales puedes tener más objetos anidados.
+Por esta razón mejor tratarlos como tal como *objetos*.
 
-<p align="center">
-  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto2.png" width="760" height="402" />
-</p>
-
-podemos observar que el objeto *JSON* en este caso llamado *SwiftyJson* posee un objeto, el cual sólo tiene una *clave* que es *restaurantes* y que tiene un *array*:
+* Si observamos nuestro response *parseado*, nuestro objeto JSON veremos algo así:
 
 ```
 {
 "restaurantes" : [{}, {}, {} ...]
 }
 ```
+podemos observar que el objeto *JSON* en este caso llamado *SwiftyJsonVar* posee un objeto, el cual sólo tiene una *clave* que es *restaurantes* y que tiene un *array*:
 
 pero es un *array de objetos* 😨
 
