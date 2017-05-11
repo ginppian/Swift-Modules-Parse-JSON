@@ -525,7 +525,7 @@ Vista de cargando...
 
 Por convención (la verdad no sé) nuestro *activity* va en el *hilo* principal, el *main*, siendo así, descargaremos el *request* en el otro hilo, que en este caso tiene prioridad de *background* pero podríamos darle una mayor.
 
-* Ponemos a correr el *activity*, como ya dijimos en el *main thread* o hilo principal:
+* Ponemos a correr el *activity*, como ya dijimos, en el *main thread* o hilo principal:
 
 ```
         DispatchQueue.global(qos: .background).async {
