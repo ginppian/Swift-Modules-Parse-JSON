@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
             
             .responseJSON(completionHandler: { response in
-
+                
                 //Deserealizacion
                 let swiftyJson = JSON(response.result.value!)
                 print("swiftyJson: \(swiftyJson)")

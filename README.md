@@ -185,6 +185,22 @@ Si corremos el proyecto podremos ver lo siguiente:
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto2.png" width="760" height="402" />
 </p>
 
+**¿Qué diferencia hay si hubiésemos dejado el siguiente código?**
+
+```
+            .responseJSON(completionHandler: { response in
+
+                print(response.result.value)
+   
+            })
+```
+
+<p align="center">
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto3.png" width="760" height="402" />
+</p>
+
+La principal **diferencia** es que con el segundo nos otros obtenemos un objeto de *Any* tendríamos que hacerle un cast a un arreglo de objetos de clave:valor *[[String: AnyObject]]* manejar sus *Nil* etc. Éste trabajo nos lo ahorra *SwiftyJSON*, pues el código de arriba nos regresa un objeto **JSON** como tal, sabiendo que podremos acceder a los datos mediante la estructura *clave:valor* y obtener la información necesaria.
+
 
 
 
