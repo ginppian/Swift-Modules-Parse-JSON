@@ -49,7 +49,7 @@ Configurando la vista:
 * Agregaremos los siguientes *Constrains*: *Equal Width*, *Equal Height* (para que tengan el mismo ancho y alto), *Center Horizontal In Container*, *Center Vertical In Container*
 
 <p align="center">
-  <img src="https://github.com/ginppian/Swift-Modules-Tap-Swipe-Navigation/blob/master/video.gif" width="320" height="568" />
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto1.png" width="1023" height="736" />
 </p>
 
 
