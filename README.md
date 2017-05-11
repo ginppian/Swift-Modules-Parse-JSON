@@ -714,9 +714,9 @@ Posterior a esto podríamos desplegarlo en un *TableView* o guarda con *CoreData
 
 * Para hacer el *parse* podemos: 
 
-..1. Hacerlo a patita, haciendo *cast* y manejando los *nil*.
-..2. Usando *SwiftyJSON* y accediendo a los *atributos* a través de *clave:valor*
-..3. Pasando a el *response* a objetos, auxiliados de *pods* como *ObjectMapper* u otros.
+.. 1. Hacerlo a patita, haciendo *cast* y manejando los *nil*.
+.. 2. Usando *SwiftyJSON* y accediendo a los *atributos* a través de *clave:valor*
+.. 3. Pasando a el *response* a objetos, auxiliados de *pods* como *ObjectMapper* u otros.
 
 * Podríamos hacer código *spaguetti*, por ejemplo guardar nuestro arreglo de objetos [{...},{...},{...}] en una variable global de tipo:
 
