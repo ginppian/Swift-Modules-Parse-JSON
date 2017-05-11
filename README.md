@@ -22,11 +22,11 @@ Swift Modules: Parse JSON
 * Parser: 
 
 <p align="justify">
-	<a href="https://es.wikipedia.org/wiki/Analizador_sint%C3%A1ctico">Un analizador sintáctico (o parser)</a> es una de las partes de un compilador que transforma su entrada en un árbol de derivación.
+	Un <a href="https://es.wikipedia.org/wiki/Analizador_sint%C3%A1ctico">analizador sintáctico o parser</a> es una de las partes de un compilador que transforma su entrada en un árbol de derivación.
 </p>
 
 <p align="justify">
-El análisis sintáctico convierte el texto de entrada en otras estructuras (comúnmente árboles), que son más útiles para el posterior análisis y capturan la jerarquía implícita de la entrada. Un analizador léxico crea tokens de una secuencia de caracteres de entrada y son estos tokens los que son procesados por el analizador sintáctico para construir la estructura de datos, por ejemplo un árbol de análisis o árboles de sintaxis abstracta.
+El análisis sintáctico convierte el texto de entrada en otras estructuras (comúnmente árboles), que son más útiles para el posterior análisis y capturan la jerarquía implícita de la entrada. Un analizador léxico crea tokens de una secuencia de caracteres de entrada y son estos tokens los que son procesados por el analizador sintáctico para construir la estructura de datos, por ejemplo un árbol de análisis o árboles de sintaxis abstracta 😟
 </p>
 
 <p align="justify">
