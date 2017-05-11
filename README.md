@@ -235,7 +235,7 @@ Como tal JSON es un arreglo de objetos [{...},{...},{...}].
 Los cuales pueden tener más objetos anidados.
 Por esta razón es mejor tratarlos como tal, como *objetos*.
 
-* Si observamos en el paso anterior, nuestro response *parseado*, nuestro objeto JSON se ve algo así:
+* Si observamos en el paso anterior, nuestro objeto JSON se ve algo así:
 
 ```
 {
