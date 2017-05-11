@@ -9,6 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import ObjectMapper
+import AlamofireObjectMapper
 
 class ViewController: UIViewController {
     
@@ -28,13 +30,18 @@ class ViewController: UIViewController {
         
         Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
             
-            .responseJSON(completionHandler: { response in
+            .responseObject { (response: DataResponse<Edoardo>) in
                 
-                //Deserealizacion
-                let swiftyJson = JSON(response.result.value!)
-                print("swiftyJson: \(swiftyJson)")
+                let edoardo = response.result.value
+                print(edoardo?.arrayRes ?? "valio barriga")
                 
-            })
+                if let restaurantes = edoardo?.arrayRes {
+                    for restaurante in restaurantes {
+                        print(restaurante.nombre)
+                    }
+                }
+
+            }
 
     }
 
@@ -44,4 +51,44 @@ class ViewController: UIViewController {
     }
 
 }
+
+
+class Edoardo: Mappable {
+    
+    var arrayRes: [Restaurantes]!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        arrayRes            <- map["restaurantes"]
+    }
+}
+
+class Restaurantes: Mappable {
+    
+    var nombre: String!
+    var latitud: Double!
+    var longitud: Double!
+    var id_establecimiento: Int!
+    var tmp: Int!
+    var descripcion: String!
+    var photo: String!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        nombre              <- map["nombre"]
+        latitud             <- map["latitud"]
+        longitud            <- map["longitud"]
+        id_establecimiento  <- map["id_establecimiento"]
+        tmp                 <- map["tmp"]
+        descripcion         <- map["descripcion"]
+        photo               <- map["photo"]
+    }
+}
+
 

@@ -119,9 +119,9 @@ class ViewController: UIViewController {
 ```
 ## Paso 2
 
-*Parseando* nuestro la respuesta de nuestro *request*:
+*Parseando* la respuesta de nuestro *request*:
 
-* Eliminamos las impresiona que están dentro de nuestro *CompletionHandler* estas:
+* Eliminamos los *print* que están dentro de nuestro *CompletionHandler* estas:
 
 ```
                 print("resquest: \(response.request)")  // original URL request
@@ -173,7 +173,7 @@ si nos aparece un advertencia roja no pasa nada, debemos construir el proyecto p
 
 **¿Qué es?**
 
-[SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) nos ahorra la tarea de estar preguntando por valores *Nil* y manejandolos **estar haciendo los *Castings* adecuados etc. simplemente le pasamos nuestro *response.result.value* y obtenemos nuestro JSON correctamente *parseado*. 
+[SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) nos ahorra la tarea de estar preguntando por valores *Nil* y manejandolos estar haciendo los *Castings* adecuados etc. simplemente le pasamos nuestro *response.result.value* y obtenemos nuestro JSON correctamente *parseado*. 
 
 * Ahora que tenemos *SwiftJSON* nos aseguraremos que nuestro *response.result.value* tenga algo, haremos la siguiente pregunta:
 
@@ -185,7 +185,7 @@ if((response.result.value) != nil) {
 }
 ```
 
-* Entonces ya podemos *parsear* nuestro la respuesta a nuestro *request* o *response.result.value*:
+* Entonces ya podemos *parsear* la respuesta a nuestro *response.result.value*:
 
 ```
             .responseJSON(completionHandler: { response in
@@ -221,9 +221,263 @@ La principal **diferencia** es que con el segundo nos otros obtenemos un objeto 
 
 Éste trabajo nos lo ahorra *SwiftyJSON*, pues el primer código nos regresa un objeto **JSON** como tal, sabiendo que podremos acceder a los datos mediante la estructura *clave:valor* y obtener la información necesaria.
 
+## Paso 3
+
+Pasando nuestro JSON a Objeto:
+
+* Como primer paso tenemos que analizar nuestro JSON:
+
+<p align="center">
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto2.png" width="760" height="402" />
+</p>
+
+podemos observar que el objeto *JSON* en este caso llamado *SwiftyJson* posee un objeto, el cual sólo tiene una *clave* que es *restaurantes* y que tiene un *array*:
+
+```
+{
+"restaurantes" : [{}, {}, {} ...]
+}
+```
+
+pero es un *array de objetos* 😨
+
+**Nota:** se le podría decir a quien hizo el *API REST* que me mandara directo todo el *array de objetos* pero para no perder tiempo, haremos uso de otro pod 😏
+
+```
+pod 'AlamofireObjectMapper', '~> 4.0'
+pod 'ObjectMapper', '~> 2.2'
+```
+
+Así que nuestro archivo *Podfile* se vería algo así:
+
+```
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'REST' do
+  # Comment the next line if you're not using Swift and don't want to use dynam$
+  use_frameworks!
+
+  # Pods for REST
+  pod 'Alamofire', '~> 4.4'
+  pod 'SwiftyJSON'
+  pod 'AlamofireObjectMapper', '~> 4.0'
+  pod 'ObjectMapper', '~> 2.2'
+end
+```
+
+Corremos *pod install*
+
+* ¿Qué es ObjectMapper?
+
+[ObjectMapper](https://github.com/Hearst-DD/ObjectMapper#objectmapper--alamofire) es un framework escrito en Swift que facilita la conversión de JSON a objetos y viceversa.
+
+* ¿Por qué instalamos **AlamofireObjectMapper**?
+
+Porque es una extensión de *Alamofire* que trabaja con *ObjectMapper* juntos.
 
 
+* Creamos el primer objeto:
 
+```
+class Edoardo: Mappable {
+    
+    var arrayRes: [Restaurantes]!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        arrayRes            <- map["restaurantes"]
+    }
+}
+```
+
+*ObjectMapper* nos pide que tengamos un *init* y que le indiquemos los *atributos* de nuestro objeto y las *claves* de donde obtendremos esos atributos.
+
+**Observar** cabe destacar que como tenemos un objeto *embebido* en un *objeto* 😒 tendremos que crear dos clases. La primera un objeto que haga referencia al otro objeto.
+
+Agregamos el segundo objeto:
+
+```
+class Restaurantes: Mappable {
+    
+    var nombre: String!
+    var latitud: Double!
+    var longitud: Double!
+    var id_establecimiento: Int!
+    var tmp: Int!
+    var descripcion: String!
+    var photo: String!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        nombre              <- map["nombre"]
+        latitud             <- map["latitud"]
+        longitud            <- map["longitud"]
+        id_establecimiento  <- map["id_establecimiento"]
+        tmp                 <- map["tmp"]
+        descripcion         <- map["descripcion"]
+        photo               <- map["photo"]
+    }
+}
+```
+
+En nuestro *ComplationHandler* eliminamos el código que estaba:
+
+```
+            .responseJSON(completionHandler: { response in
+                
+                //Deserealizacion
+                let swiftyJson = JSON(response.result.value!)
+                print("swiftyJson: \(swiftyJson)")
+                
+            })
+
+```
+
+y agregamos este:
+
+```
+            .responseObject { (response: DataResponse<Edoardo>) in
+                
+                let edoardo = response.result.value
+                print(edoardo?.arrayRes ?? "valio barriga")
+                
+                if let restaurantes = edoardo?.arrayRes {
+                    for restaurante in restaurantes {
+                        print(restaurante.nombre)
+                    }
+                }
+
+            }
+```
+
+
+Aquí es donde usamos *AlamofireObjectMapper* pues antes de poner nuestro *ComplationHandler*, usamos:
+
+```
+.responseJSON
+```
+
+es decir,
+
+```
+ Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers).responseJSON(completionHandler: {response in
+
+})
+```
+
+si nos fijamos en el [tutorial pasado](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) en las opciones que nos salía cuando poníamos *.response* no existe ninguna que se llame **.responseObject**. * AlamofireObjectMapper* nos da esta opción.
+
+Al final nuestro código se vería algo así:
+
+```
+//
+//  ViewController.swift
+//  REST
+//
+//  Created by ginppian on 10/05/17.
+//  Copyright © 2017 Nut Systems. All rights reserved.
+//
+
+import UIKit
+import Alamofire
+import SwiftyJSON
+import ObjectMapper
+import AlamofireObjectMapper
+
+class ViewController: UIViewController {
+    
+    @IBOutlet var activity: UIActivityIndicatorView!
+    
+    let headers: HTTPHeaders = [
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+        ]
+    
+    let params : Parameters = ["token": "c31e7cc5503e222a6d2ab594c845730272273a5bdcdbd1b97e29df7e19b3ecdadf021fe6a05a0da5c7046e670d89365181d15d037262822231735da484398578"]
+    
+    let url = "https://offercity.herokuapp.com/api/mostrarEstablecimiento"
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+            
+            .responseObject { (response: DataResponse<Edoardo>) in
+                
+                let edoardo = response.result.value
+                print(edoardo?.arrayRes ?? "valio barriga")
+                
+                if let restaurantes = edoardo?.arrayRes {
+                    for restaurante in restaurantes {
+                        print(restaurante.nombre)
+                    }
+                }
+
+            }
+
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+}
+
+
+class Edoardo: Mappable {
+    
+    var arrayRes: [Restaurantes]!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        arrayRes            <- map["restaurantes"]
+    }
+}
+
+class Restaurantes: Mappable {
+    
+    var nombre: String!
+    var latitud: Double!
+    var longitud: Double!
+    var id_establecimiento: Int!
+    var tmp: Int!
+    var descripcion: String!
+    var photo: String!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        nombre              <- map["nombre"]
+        latitud             <- map["latitud"]
+        longitud            <- map["longitud"]
+        id_establecimiento  <- map["id_establecimiento"]
+        tmp                 <- map["tmp"]
+        descripcion         <- map["descripcion"]
+        photo               <- map["photo"]
+    }
+}
+```
+
+Si *construimos* y *corremos* el proyecto podremos ver:
+
+<p align="center">
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto4.png" width="763" height="262" />
+</p>
+
+😱😱😱 Imprimimos el *nombre* de cada *objeto*. Ya podemos acceder a los *atributos* de cada objeto 😏
 
 
 

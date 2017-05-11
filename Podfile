@@ -8,4 +8,6 @@ target 'REST' do
   # Pods for REST
   pod 'Alamofire', '~> 4.4'
   pod 'SwiftyJSON'
+  pod 'AlamofireObjectMapper', '~> 4.0'
+  pod 'ObjectMapper', '~> 2.2'
 end
