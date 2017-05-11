@@ -686,7 +686,70 @@ Posterior a esto podríamos desplegarlo en *TableView* o guarda con *CoreData*.
 
 ### Conclusiones
 
+* El uso de *pods* nos simplifica ampliamente la vida.
 
+* Primero debemos hacer un *parse* a JSON y después podremos almacenarlos en objetos. 
+
+* Podríamos evitarlo pasar nuestro *parse* a un *objeto* y hacer código *spaguetti*, por ejemplo guardar nuestro arreglo de objetos [{...},{...},{...}] es una variable global de tipo:
+
+```
+var arrayGlobal = [[String:AnyObject]] 
+```
+
+y de esta manera, si usamos por ejemplo *TableView* en el método *cellForRowAtIndexPath* ahí podríamos poner algo como:
+
+```
+func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("CellIdentifier", forIndexPath: indexPath) as UITableViewCell
+
+				var objeto = self.arrayGlobal[indexPath.row]        
+    		let nombre = objeto["nombre"] as? String
+
+        //Nombre
+        if nombre != nil {
+            
+            cell.titulo.text = nombre
+            
+        } else {
+            
+            cell.titulo.text = ""
+            
+        }
+
+    return cell
+}
+```
+
+Esto presenta varias desventajas: continuamente se estará ejecutando esas operaciones en vez de una sola vez, a la larga se volverá difícil de mantener ese código, no podemos usar la información en otras funciones, etc.
+
+La recomendación es tratar a los objetos JSON como *objetos*.
+
+* Existen otros *pods* como [HandyJSON](https://github.com/alibaba/HandyJSON) que también nos permite pasar nuestro JSON a Objeto. Aun que *Alamofire* nos permite recibir la *respuesta* o *response* en un *String*:
+
+```
+                .responseString(completionHandler: { response in
+                //Do something...
+                })
+```
+
+La desventaja para este ejemplo es que *HandyJSON* como tal necesita una cadena con caracteres (por eso las '\'):
+
+```
+let jsonString = "{\"doubleOptional\":1.1,\"stringImplicitlyUnwrapped\":\"hello\",\"int\":1}"
+```
+
+inclusive puede manejar un arreglo de objetos:
+
+```
+let jsonArrayString: String? = "[{\"name\":\"Bob\",\"id\":\"1\"}, {\"name\":\"Lily\",\"id\":\"2\"}, {\"name\":\"Lucy\",\"id\":\"3\"}]"
+if let cats = [Cat].deserialize(from: jsonArrayString) {
+    cats.forEach({ (cat) in
+        // ...
+    })
+}
+```
+
+pero para este ejemplo no era útil pues nuestro objeto tenía anidado a un objeto, hubiera sido muy difícil acceder a los *atributos* (nombre, apellido, descripción, etc.) de cualquier objeto *n* del array. La opción más fácil fue la representación de un objeto que anidara otro objeto.
 
 ### Contacto
 
