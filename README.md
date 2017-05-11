@@ -540,7 +540,7 @@ Por convención (la verdad no sé) nuestro *activity* va en el *hilo* principal,
         }
 ```
 
-* Descargamos nuestro *request*
+* Descargamos nuestro *request* en el hilo de *background*
 
 ```
         DispatchQueue.global(qos: .background).async {
