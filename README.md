@@ -34,6 +34,20 @@ El análisis sintáctico convierte el texto de entrada en otras estructuras (com
 <b>Es decir,</b> para fines prácticos un <b>parser</b> en <i>JSON</i> es intercambiar datos que recibimos de un <i>Servidor Web</i> (pues siempre vienen como un <i>String</i>) a un formato de <i>"Clave":Valor</i> o un formato <i>JSON</i> 😎
 </p>
 
+* Tabla Hash:
+
+<p align="justify">
+Una [tabla hash](https://es.wikipedia.org/wiki/Tabla_hash), matriz asociativa, mapa hash, tabla de dispersión o tabla fragmentada es una estructura de datos que asocia llaves o claves con valores. La operación principal que soporta de manera eficiente es la búsqueda: permite el acceso a los elementos (teléfono y dirección, por ejemplo) almacenados a partir de una clave generada (usando el nombre o número de cuenta, por ejemplo). Funciona transformando la clave con una función hash en un hash, un número que identifica la posición (casilla o cubeta) donde la tabla hash localiza el valor deseado.
+</p>
+
+<p align="justify">
+Es sumamente <b>rápida</b> pues es una <i>lista ligada</i>, es decir, una lista ligada es como un array sólo que apunta a su siguiente valor por <b>referencia</b> (a su dirección en <i>memoria</i> directamente).
+</p>
+
+<p align="justify">
+	Si nos otros conocemos la <b>clave</b> nos evitaremos estar haciendo <i>ciclos</i> para recorrer todos lo elementos y obtendremos directamente el <b>valor</b>.
+</p>
+
 ## Desarrollo
 
 <p align="justify">
@@ -199,7 +213,9 @@ Si corremos el proyecto podremos ver lo siguiente:
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto3.png" width="760" height="402" />
 </p>
 
-La principal **diferencia** es que con el segundo nos otros obtenemos un objeto de *Any* tendríamos que hacerle un cast a un arreglo de objetos de clave:valor *[[String: AnyObject]]* manejar sus *Nil* etc. Éste trabajo nos lo ahorra *SwiftyJSON*, pues el código de arriba nos regresa un objeto **JSON** como tal, sabiendo que podremos acceder a los datos mediante la estructura *clave:valor* y obtener la información necesaria.
+La principal **diferencia** es que con el segundo nos otros obtenemos un objeto de *Any* tendríamos que hacerle un cast a un arreglo de objetos de clave:valor *[[String: AnyObject]]*, recorrerlo manejando sus *Nil* etc. 
+
+Éste trabajo nos lo ahorra *SwiftyJSON*, pues el primer código nos regresa un objeto **JSON** como tal, sabiendo que podremos acceder a los datos mediante la estructura *clave:valor* y obtener la información necesaria.
 
 
 
