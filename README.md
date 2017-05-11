@@ -706,7 +706,7 @@ class Restaurantes: Mappable {
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto6.gif" width="638" height="360" />
 </p>
 
-Posterior a esto podríamos desplegarlo en *TableView* o guarda con *CoreData*.
+Posterior a esto podríamos desplegarlo en un *TableView* o guarda con *CoreData*.
 
 ### Conclusiones
 
