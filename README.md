@@ -372,7 +372,7 @@ es decir,
 })
 ```
 
-si nos fijamos en el [tutorial pasado](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) en las opciones que nos salía cuando poníamos *.response* no existe ninguna que se llame **.responseObject**. * AlamofireObjectMapper* nos da esta opción.
+si nos fijamos en el [tutorial pasado](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) en las opciones que nos salía cuando poníamos *.response* no existe ninguna que se llame **.responseObject**. *AlamofireObjectMapper* nos da esta opción.
 
 Al final nuestro código se vería algo así:
 
@@ -477,8 +477,210 @@ Si *construimos* y *corremos* el proyecto podremos ver:
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto4.png" width="763" height="262" />
 </p>
 
-😱😱😱 Imprimimos el *nombre* de cada *objeto*. Ya podemos acceder a los *atributos* de cada objeto 😏
+😱😱😱 Imprimimos el *nombre* de cada *objeto*. Ya podemos acceder a los *atributos* de cada objeto 😎
 
+## Paso 4
+
+Vista de cargando...
+
+Acaso no habíamos dicho que la **expreiencia de usuario** pues sí llego la hora de poner nuestro activity en marcha:
+
+* Como el activity es una *vista* si corriéramos el *request al servidor* en algún momento haría *crash*. Por eso debemos tener en un *hilo* nuestro *activity* (girando muy bonito) y en *otro hilo* nuestro *Alamofire* descargando el JSON.
+
+```
+         DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                
+            }
+        }
+``` 
+
+Por convención (la verdad no sé) nuestro *activity* va en el *hilo* principal, el *main*, siendo así, descargaremos el *request* en el otro hilo, que en este caso tiene prioridad de *background* pero podría dársele una mayor prioridad.
+
+* Ponemos a correr el *activity*, como ya dijimos en el *main thread* o hilo principal:
+
+```
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                self.activity.startAnimating()
+                
+            }
+        }
+```
+
+* Descargamos nuestro *request*
+
+```
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            
+            Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+                
+                .responseObject { (response: DataResponse<Edoardo>) in
+                    
+                    let edoardo = response.result.value
+                    print(edoardo?.arrayRes ?? "valio barriga")
+                    
+                    if let restaurantes = edoardo?.arrayRes {
+                        for restaurante in restaurantes {
+                            print(restaurante.nombre)
+                        }
+                    }
+                    
+            }
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                self.activity.startAnimating()
+                
+            }
+        }
+```
+
+* Y una vez terminado de descargar, detenemos el *activity*:
+
+```
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            
+            Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+                
+                .responseObject { (response: DataResponse<Edoardo>) in
+                    
+                    let edoardo = response.result.value
+                    print(edoardo?.arrayRes ?? "valio barriga")
+                    
+                    if let restaurantes = edoardo?.arrayRes {
+                        for restaurante in restaurantes {
+                            print(restaurante.nombre)
+                        }
+                    }
+             
+                    self.activity.stopAnimating()
+                    self.activity.isHidden = true
+            }
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                self.activity.startAnimating()
+                
+            }
+        }
+```
+
+Al final nuestro código se vería algo así:
+
+```
+import UIKit
+import Alamofire
+import SwiftyJSON
+import ObjectMapper
+import AlamofireObjectMapper
+
+class ViewController: UIViewController {
+    
+    @IBOutlet var activity: UIActivityIndicatorView!
+    
+    let headers: HTTPHeaders = [
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+        ]
+    
+    let params : Parameters = ["token": "c31e7cc5503e222a6d2ab594c845730272273a5bdcdbd1b97e29df7e19b3ecdadf021fe6a05a0da5c7046e670d89365181d15d037262822231735da484398578"]
+    
+    let url = "https://offercity.herokuapp.com/api/mostrarEstablecimiento"
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            
+            Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+                
+                .responseObject { (response: DataResponse<Edoardo>) in
+                    
+                    let edoardo = response.result.value
+                    print(edoardo?.arrayRes ?? "valio barriga")
+                    
+                    if let restaurantes = edoardo?.arrayRes {
+                        for restaurante in restaurantes {
+                            print(restaurante.nombre)
+                        }
+                    }
+                    
+                    self.activity.stopAnimating()
+                    self.activity.isHidden = true
+            }
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                self.activity.startAnimating()
+                
+            }
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+}
+
+class Edoardo: Mappable {
+    
+    var arrayRes: [Restaurantes]!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        arrayRes            <- map["restaurantes"]
+    }
+}
+
+class Restaurantes: Mappable {
+    
+    var nombre: String!
+    var latitud: Double!
+    var longitud: Double!
+    var id_establecimiento: Int!
+    var tmp: Int!
+    var descripcion: String!
+    var photo: String!
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        nombre              <- map["nombre"]
+        latitud             <- map["latitud"]
+        longitud            <- map["longitud"]
+        id_establecimiento  <- map["id_establecimiento"]
+        tmp                 <- map["tmp"]
+        descripcion         <- map["descripcion"]
+        photo               <- map["photo"]
+    }
+}
+```
+
+Posterior a esto podríamos desplegarlo en *TableView* o guarda con *CoreData*.
+
+### Conclusiones
 
 
 

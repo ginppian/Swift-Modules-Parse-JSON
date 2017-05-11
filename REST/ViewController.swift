@@ -28,21 +28,33 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
             
-            .responseObject { (response: DataResponse<Edoardo>) in
+            Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
                 
-                let edoardo = response.result.value
-                print(edoardo?.arrayRes ?? "valio barriga")
-                
-                if let restaurantes = edoardo?.arrayRes {
-                    for restaurante in restaurantes {
-                        print(restaurante.nombre)
+                .responseObject { (response: DataResponse<Edoardo>) in
+                    
+                    let edoardo = response.result.value
+                    print(edoardo?.arrayRes ?? "valio barriga")
+                    
+                    if let restaurantes = edoardo?.arrayRes {
+                        for restaurante in restaurantes {
+                            print(restaurante.nombre)
+                        }
                     }
-                }
-
+                    
+                    self.activity.stopAnimating()
+                    self.activity.isHidden = true
             }
-
+            
+            DispatchQueue.main.async {
+                print("This is run on the main queue, after the previous code in outer block")
+                
+                self.activity.startAnimating()
+                
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,7 +63,6 @@ class ViewController: UIViewController {
     }
 
 }
-
 
 class Edoardo: Mappable {
     
