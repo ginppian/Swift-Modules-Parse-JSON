@@ -507,9 +507,9 @@ Si *construimos* y *corremos* el proyecto podremos ver lo siguiente:
 
 Vista de cargando...
 
-Acaso no habíamos dicho que la **expreiencia de usuario** pues sí llego la hora de poner nuestro activity en marcha:
+¿Acaso no habíamos dicho que la **expreiencia de usuario** era primordial? ¡pues sí! llego la hora de poner nuestro *activity indicator* en marcha:
 
-* Como el activity es una *vista* si corriéramos el *request al servidor* en algún momento haría *crash*. Por eso debemos tener en un *hilo* nuestro *activity* (girando muy bonito) y en *otro hilo* nuestro *Alamofire* descargando el JSON.
+* Como el *activity* es parte de nuestra *vista*, si corriéramos éste y el *request* en algún momento haría *crash*. Por eso debemos tener en un *hilo* para nuestro *activity* (se encargara de mantenerlo girando, muy nice) y en *otro hilo* nuestro *Alamofire* descargando los JSON.
 
 ```
          DispatchQueue.global(qos: .background).async {
