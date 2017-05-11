@@ -679,7 +679,7 @@ class Restaurantes: Mappable {
 ```
 
 <p align="center">
-  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto5.gif" width="638" height="360" />
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto6.gif" width="638" height="360" />
 </p>
 
 Posterior a esto podríamos desplegarlo en *TableView* o guarda con *CoreData*.
