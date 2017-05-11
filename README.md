@@ -750,7 +750,7 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
 
 Esto presenta varias desventajas: 
 
-1.- Continuamente se estará ejecutando esas operaciones en vez de una sola vez.
+** Continuamente se estará ejecutando esas operaciones en vez de una sola vez.
 2.- A la larga se volverá difícil de mantener el código.
 3.- No podemos usar la información obtenida en otras funciones, etc.
 
