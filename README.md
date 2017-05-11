@@ -48,6 +48,10 @@ Es sumamente <b>rápida</b> pues es una <i>lista ligada</i>, es decir, una lista
 	Si nos otros conocemos la <b>clave</b> nos evitaremos estar haciendo <i>ciclos</i> para recorrer todos lo elementos y obtendremos directamente el <b>valor</b>.
 </p>
 
+<p align="justify">
+	En iOS nos otros conocemos a las <i>tablas has</i> como <i>Diccionarios (NSDictionary)</i> o <i>KVC (Key Value Coding)</i>.
+</p>
+
 ## Desarrollo
 
 <p align="justify">
