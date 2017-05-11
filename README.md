@@ -301,7 +301,7 @@ class Edoardo: Mappable {
 
 *ObjectMapper* nos pide que tengamos un *init* y que le indiquemos los *atributos* de nuestro objeto y las *claves* de donde obtendremos esos atributos.
 
-**Observar**. Cabe destacar que como tenemos un objeto *embebido* en un *objeto* 😒 tendremos que crear dos clases. La primera un objeto que haga referencia al otro objeto.
+**Observar**. Cabe destacar que como tenemos un objeto *embebido* en un *objeto* 🤔 tendremos que crear dos clases. La primera un objeto que haga referencia al otro objeto.
 
 Agregamos nuestra segunda clase:
 
