@@ -101,7 +101,7 @@ class ViewController: UIViewController {
 ```
 ## Paso 2
 
-*Parseando* nuestro *request*:
+*Parseando* nuestro la respuesta de nuestro *request*:
 
 * Eliminamos las impresiona que están dentro de nuestro *CompletionHandler* estas:
 
@@ -119,7 +119,7 @@ ya vimos que:
 response.result.value
 ```
 
-nos imprime todo el array de objetos. Para darle formato JSON *primero* nos instalaremos el siguiente pod:
+nos imprime todo el array de objetos. Para darle formato JSON primero, instalaremos el siguiente pod:
 
 ```
 pod 'SwiftyJSON'
@@ -145,13 +145,15 @@ y le damos *pod install*
 
 **Nota:** hay veces que debemos cerrar Xcode y abrir el archivo: *.xcworkspace* que nos genera la instalación del *Pod*.
 
-* Siguiente paso es importar SwiftyJSON
+* El siguiente paso es importar: SwiftyJSON
 
 ```
 import SwiftyJSON
 ```
 
 si nos aparece un advertencia roja no pasa nada, debemos construir el proyecto para eliminarla.
+
+**¿Qué es?**
 
 [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) nos ahorra la tarea de estar preguntando por valores *Nil* y manejandolos **estar haciendo los *Castings* adecuados etc. simplemente le pasamos nuestro *response.result.value* y obtenemos nuestro JSON correctamente *parseado*. 
 
@@ -165,8 +167,23 @@ if((response.result.value) != nil) {
 }
 ```
 
+* Entonces ya podemos *parsear* nuestro la respuesta a nuestro *request* o *response.result.value*:
 
+```
+            .responseJSON(completionHandler: { response in
 
+                //Deserealizacion
+                let swiftyJson = JSON(response.result.value!)
+                print("swiftyJson: \(swiftyJson)")
+                
+            })
+```
+
+Si corremos el proyecto podremos ver lo siguiente:
+
+<p align="center">
+  <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto2.png" width="760" height="402" />
+</p>
 
 
 

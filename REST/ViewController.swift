@@ -30,7 +30,9 @@ class ViewController: UIViewController {
             
             .responseJSON(completionHandler: { response in
 
-                
+                //Deserealizacion
+                let swiftyJson = JSON(response.result.value!)
+                print("swiftyJson: \(swiftyJson)")
                 
             })
 
