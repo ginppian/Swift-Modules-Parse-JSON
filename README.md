@@ -495,7 +495,7 @@ class Restaurantes: Mappable {
 }
 ```
 
-Si *construimos* y *corremos* el proyecto podremos ver:
+Si *construimos* y *corremos* el proyecto podremos ver lo siguiente:
 
 <p align="center">
   <img src="https://github.com/ginppian/Swift-Modules-Parse-JSON/blob/master/tuto4.png" width="763" height="262" />
