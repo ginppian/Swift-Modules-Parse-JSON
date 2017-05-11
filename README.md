@@ -55,7 +55,7 @@ Es sumamente <b>rápida</b> pues es una <i>lista ligada</i>, es decir, una lista
 ## Desarrollo
 
 <p align="justify">
-	A continuación basándonos en la <b>experiencia</b> de usuario agregaremos un <i>UIActivityView</i> lo cual nos indica que está cargando. A continuación almacenaremos los datos obtenidos en objetos.
+	A continuación basándonos en la <b>experiencia de usuario</b> agregaremos un <i>UIActivityView</i> lo cual nos indica que está cargando. A continuación almacenaremos los datos obtenidos en objetos.
 </p>
 
 ### Paso 1
