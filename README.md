@@ -712,15 +712,19 @@ Posterior a esto podríamos desplegarlo en un *TableView* o guarda con *CoreData
 
 * El uso de *pods* nos simplifica ampliamente la vida.
 
-* Primero debemos hacer un *parse* a JSON y después podremos almacenarlos en objetos. 
+* Para hacer el *parse* podemos: 
 
-* Podríamos evitarlo pasar nuestro *parse* a un *objeto* y hacer código *spaguetti*, por ejemplo guardar nuestro arreglo de objetos [{...},{...},{...}] es una variable global de tipo:
+1.- Hacerlo a patita, haciendo *cast* y manejando los *nil*.
+2.- Usando *SwiftyJSON* y accediendo a los *atributos* a través de *clave:valor*
+3.- Pasando a el *response* a objetos, auxiliados de *pods* como *ObjectMapper* u otros.
+
+* Podríamos hacer código *spaguetti*, por ejemplo guardar nuestro arreglo de objetos [{...},{...},{...}] en una variable global de tipo:
 
 ```
 var arrayGlobal = [[String:AnyObject]] 
 ```
 
-y de esta manera, si usamos por ejemplo *TableView* en el método *cellForRowAtIndexPath* ahí podríamos poner algo como:
+y de esta manera, si usamos por ejemplo un *TableView* en su método *cellForRowAtIndexPath* podríamos agregar algo como:
 
 ```
 func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell {
@@ -744,11 +748,17 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
 }
 ```
 
-Esto presenta varias desventajas: continuamente se estará ejecutando esas operaciones en vez de una sola vez, a la larga se volverá difícil de mantener ese código, no podemos usar la información en otras funciones, etc.
+Esto presenta varias desventajas: 
 
-La recomendación es tratar a los objetos JSON como *objetos*.
+1.- Continuamente se estará ejecutando esas operaciones en vez de una sola vez.
+2.- A la larga se volverá difícil de mantener el código.
+3.- No podemos usar la información obtenida en otras funciones, etc.
 
-* Existen otros *pods* como [HandyJSON](https://github.com/alibaba/HandyJSON) que también nos permite pasar nuestro JSON a Objeto. Aun que *Alamofire* nos permite recibir la *respuesta* o *response* en un *String*:
+La recomendación es tratar a los objetos JSON como lo que son: *objetos*.
+
+* Existen otros *pods* como [HandyJSON](https://github.com/alibaba/HandyJSON) que también nos permite pasar nuestro *response* a Objeto. Para usar este *pod* es necesario recibir la *response* como String (en vez de como JSON) y así darle *tratamiento*, para posteriormente obtener los objetos.
+
+*Alamofire* permite esta opción, de recibir la *respuesta* como String:
 
 ```
                 .responseString(completionHandler: { response in
@@ -756,7 +766,7 @@ La recomendación es tratar a los objetos JSON como *objetos*.
                 })
 ```
 
-La desventaja para este ejemplo es que *HandyJSON* como tal necesita una cadena con caracteres (por eso las '\'):
+*HandyJSON* obtiene los objetos de esta manera:
 
 ```
 let jsonString = "{\"doubleOptional\":1.1,\"stringImplicitlyUnwrapped\":\"hello\",\"int\":1}"
@@ -773,7 +783,9 @@ if let cats = [Cat].deserialize(from: jsonArrayString) {
 }
 ```
 
-pero para este ejemplo no era útil pues nuestro objeto tenía anidado a un objeto, hubiera sido muy difícil acceder a los *atributos* (nombre, apellido, descripción, etc.) de cualquier objeto *n* del array. La opción más fácil fue la representación de un objeto que anidara otro objeto.
+La desventaja es que para este ejemplo *HandyJSON* **no funciona**, pues nuestro objeto tenía *anidado* un array de objetos, hubiera sido muy difícil acceder a los *atributos* manejando *HandyJSON*.
+
+La mejor opción en este caso es la representación de un objeto que anidara otro objeto, por eso usamos *ObjectMapper*.
 
 ### Contacto
 
