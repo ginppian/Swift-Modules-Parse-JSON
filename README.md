@@ -232,17 +232,17 @@ Como tal SwiftyJSON nos da un objeto de tipo JSON, él cual podriamos recorrerlo
 Construyendo Objetos:
 
 Como tal JSON es un arreglo de objetos [{...},{...},{...}].
-Los cuales puedes tener más objetos anidados.
-Por esta razón mejor tratarlos como tal como *objetos*.
+Los cuales pueden tener más objetos anidados.
+Por esta razón es mejor tratarlos como tal, como *objetos*.
 
-* Si observamos nuestro response *parseado*, nuestro objeto JSON veremos algo así:
+* Si observamos en el paso anterior, nuestro response *parseado*, nuestro objeto JSON se ve algo así:
 
 ```
 {
 "restaurantes" : [{}, {}, {} ...]
 }
 ```
-podemos observar que el objeto *JSON* en este caso llamado *SwiftyJsonVar* posee un objeto, el cual sólo tiene una *clave* que es *restaurantes* y que tiene un *array*:
+podemos observar que el objeto *JSON* en este caso llamado *SwiftyJsonVar* posee un objeto, el cual sólo tiene una *clave* que es *restaurantes* y que accede a un *array*:
 
 pero es un *array de objetos* 😨
 
@@ -301,9 +301,9 @@ class Edoardo: Mappable {
 
 *ObjectMapper* nos pide que tengamos un *init* y que le indiquemos los *atributos* de nuestro objeto y las *claves* de donde obtendremos esos atributos.
 
-**Observar** cabe destacar que como tenemos un objeto *embebido* en un *objeto* 😒 tendremos que crear dos clases. La primera un objeto que haga referencia al otro objeto.
+**Observar**. Cabe destacar que como tenemos un objeto *embebido* en un *objeto* 😒 tendremos que crear dos clases. La primera un objeto que haga referencia al otro objeto.
 
-Agregamos el segundo objeto:
+Agregamos nuestra segunda clase:
 
 ```
 class Restaurantes: Mappable {
@@ -332,7 +332,7 @@ class Restaurantes: Mappable {
 }
 ```
 
-En nuestro *ComplationHandler* eliminamos el código que estaba:
+En nuestro *ComplationHandler* eliminamos el código que estaba con el que usábamos *SwiftyJSON*:
 
 ```
             .responseJSON(completionHandler: { response in
@@ -363,21 +363,40 @@ y agregamos este:
 ```
 
 
-Aquí es donde usamos *AlamofireObjectMapper* pues antes de poner nuestro *ComplationHandler*, usamos:
+Aquí es donde usamos *AlamofireObjectMapper* pues cuando usamos la siguiente función:
+
+```
+ Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
+
+.responseJSON(completionHandler: {response in
+
+})
+.responseString(completionHandler: { response in
+ 
+})
+```
+
+podemos usar:
 
 ```
 .responseJSON
 ```
 
-es decir,
+o
 
 ```
- Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers).responseJSON(completionHandler: {response in
-
-})
+.responseString
 ```
 
-si nos fijamos en el [tutorial pasado](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) en las opciones que nos salía cuando poníamos *.response* no existe ninguna que se llame **.responseObject**. *AlamofireObjectMapper* nos da esta opción.
+pero no
+
+```
+.responseObject
+```
+
+*AlamofireObjectMapper* nos agrega esta opción.
+
+Pueden ver el [tutorial pasado](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) para comprobar que no existe ninguna que se llame **.responseObject**.
 
 Al final nuestro código se vería algo así:
 

@@ -33,6 +33,8 @@ class ViewController: UIViewController {
             
             Alamofire.request(self.url, method: .post, parameters: self.params, encoding: URLEncoding.httpBody, headers: self.headers)
                 
+                .responseString(completionHandler: { response in
+                })
                 .responseObject { (response: DataResponse<Edoardo>) in
                     
                     let edoardo = response.result.value
