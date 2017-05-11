@@ -4,7 +4,7 @@ Swift Modules: Parse JSON
 ## Descripción:
 
 <p align="justify">
-	En el [tutorial anterior](https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST) hicimos el consumo de servicios REST, para continuar con este tutoría ahora a esos datos que obtuvimos les daremos un formato.
+	En el <a href="https://github.com/ginppian/Swift-Modules-Consum-REST-Service-With-POST">tutoría anterior</a> hicimos el consumo de servicios REST, para continuar con este tutoría ahora a esos datos que obtuvimos les daremos un formato.
 </p>
 
 <p align="justify">
